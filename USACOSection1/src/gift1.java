@@ -35,19 +35,19 @@ public class gift1 {
 			String name = in.readLine();
 			StringTokenizer st = new StringTokenizer(in.readLine());
 			int money = Integer.parseInt(st.nextToken());
-			int giveCount = Integer.parseInt(st.nextToken());
-			if (giveCount == 0)
+			int receiverCount = Integer.parseInt(st.nextToken());
+			if (receiverCount == 0)
 				continue;
 			
 			// giver
-			int remainMoney = money % giveCount;
-			int givePerMoney = money / giveCount;
-			map.put(name, map.get(name).intValue() - (money - remainMoney));
+			int remainingMoney = money % receiverCount;
+			int receiverGetMoney = money / receiverCount;
+			map.put(name, map.get(name) - (money - remainingMoney));
 			
-			// receiver
-			for (int j = 0; j < giveCount; j++) {
+			// the giver's receiver
+			for (int j = 0; j < receiverCount; j++) {
 				String receiver = in.readLine();
-				map.put(receiver, map.get(receiver).intValue() + givePerMoney);
+				map.put(receiver, map.get(receiver) + receiverGetMoney);
 			}
 		}
 

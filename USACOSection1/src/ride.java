@@ -1,4 +1,4 @@
-// USACO Section 1.1
+// USACO Section 1.1.1
 
 /*
 ID: leonluc1
@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 class ride {
 	  public static void main (String [] args) throws IOException {
 		    BufferedReader in = new BufferedReader(new FileReader("ride.in"));
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("ride.out")));
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("ride.out")),true);
 		    String comet = in.readLine();
 		    String group = in.readLine();
 		    
@@ -25,16 +25,13 @@ class ride {
 		    else
 		    	out.println("STAY");
 
-		    out.close();
 		    System.exit(0);
 	  }
 	  
 	  private static int mod47(String s){
 		  int res = 1;
-		  for(int i = 0; i < s.length(); i++){
+		  for(int i = 0; i < s.length(); i++)
 			  res *= (s.charAt(i)-'A'+1);
-		  }
 		  return res % 47;
 	  }
-
 }

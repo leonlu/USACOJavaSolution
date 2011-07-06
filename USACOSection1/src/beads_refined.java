@@ -14,11 +14,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 //Using DP, it is O(n)
+//if beads[i]=='r' or 'w'  rLeft[i+1] = rLeft[i]+1;
+//else                     rLeft[i+1] = 0
 public class beads_refined {
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("beads.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"beads.out")));
+				"beads.out")),true);
 
 		in.readLine();
 		String line = in.readLine();
@@ -72,7 +74,6 @@ public class beads_refined {
 
 		out.println(max);
 
-		out.close();
 		System.exit(0);
 	}
 }

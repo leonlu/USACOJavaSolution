@@ -19,19 +19,21 @@ public class beads {
 		 BufferedReader in = new BufferedReader(new FileReader("beads.in"));
 		 PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("beads.out")),true);
 		 
-		 in.readLine(); // characters count, just ignore it
+		// characters count, just ignore it
+		 in.readLine(); 
 		 
 		 String line = in.readLine();
 		 String beads = line + line;
 		 
 		 // find the first bead not white
-		 int indexNotWhite = NotWhiteIndex(0, beads);
+		 int indexNotWhite = notWhiteIndex(0, beads);
 		 // beads all white
 		 if(indexNotWhite == -1) {
 			 out.println(line.length());
 			 return;
 		 }
 		 
+		 // for every possible break point
 		 int max = 0;
 		 do{
 			 char left = beads.charAt(indexNotWhite);
@@ -40,7 +42,7 @@ public class beads {
 			 int rightCount = rightCount(right,indexNotWhite+1, beads);
 			 if(leftCount + rightCount > max)
 				 max = leftCount + rightCount;
-		 }while((indexNotWhite = NotWhiteIndex(indexNotWhite+1, beads))!=-1);
+		 }while((indexNotWhite = notWhiteIndex(indexNotWhite+1, beads))!=-1);
 		 
 		 if(max > line.length()) 
 			 out.println(line.length());
@@ -50,7 +52,7 @@ public class beads {
 		 System.exit(0);
 	 }
 	 
-	 private static int NotWhiteIndex(int beg, String beads){
+	 private static int notWhiteIndex(int beg, String beads){
 		 for(int i = beg; i < beads.length(); i++){
 			 if(beads.charAt(i) != 'w') {
 				return i;

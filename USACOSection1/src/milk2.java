@@ -64,7 +64,7 @@ public class milk2 {
 		}
 		longestMilked = curMilked > longestMilked ? curMilked : longestMilked;
 
-		// calculate not milked
+		// calculate longest not milked
 		int longestNotMilked = 0;
 		if (timespans.length == 1)
 			longestNotMilked = 0;

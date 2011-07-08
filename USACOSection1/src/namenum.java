@@ -1,4 +1,4 @@
-// USACO Section 1.2
+// USACO Section 1.2.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,15 +20,17 @@ public class namenum {
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("namenum.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"namenum.out")));
+				"namenum.out")),true);
 		String input = in.readLine();
 		List<String> dict = readDict();
 		List<String> res = new ArrayList<String>();
 		
+		// converted names of dictionary to match input string
 		for(String s : dict)
 			if(convert(s).equals(input))
 				res.add(s);
 		
+		// output
 		if(res.size() == 0) out.println("NONE");
 		else{
 			Collections.sort(res);
@@ -36,7 +38,6 @@ public class namenum {
 				out.println(s);
 		}
 		
-		out.close();
 		System.exit(0);
 	}
 	
@@ -70,76 +71,4 @@ public class namenum {
 			ret.add(tmp);
 		return ret;
 	}
-	
 }
-
-
-
-// data 26678268463 -> tle: 1.7s Map GenString to Dict
-//public class namenum {
-//	  public static void main (String [] args) throws IOException {
-//		  BufferedReader in = new BufferedReader(new FileReader("namenum.in"));
-//		  PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("namenum.out")));
-//		  String input = in.readLine();
-//
-//		  String[] genStrings = inputToStrings(input);
-//		  
-//		  if(genStrings == null) out.println("NONE");
-//		  else{
-//			  List<String> names = new ArrayList<String>();
-//			  HashSet<String> set = readDict();
-//			  for(int i = 0; i < genStrings.length; i++)
-//				  if(set.contains(genStrings[i]))
-//					  names.add(genStrings[i]);
-//			  if(names.size() == 0) out.println("NONE");
-//			  else{
-//				  Collections.sort(names);
-//				  for(String s : names)
-//					  out.println(s);
-//			  }
-//		  }
-//		  out.close();
-//		  System.exit(0);
-//	  }
-//	  
-//	  private static char[] digitToChars(int digit){
-//		  switch(digit){
-//			  case 2: return new char[]{'A','B','C'};
-//			  case 3: return new char[]{'D','E','F'};
-//			  case 4: return new char[]{'G','H','I'};
-//			  case 5: return new char[]{'J','K','L'};
-//			  case 6: return new char[]{'M','N','O'};
-//			  case 7: return new char[]{'P','R','S'};
-//			  case 8: return new char[]{'T','U','V'};
-//			  case 9: return new char[]{'W','X','Y'};
-//		  }
-//		  return null;
-//	  }
-//	  
-//	  private static String[] inputToStrings(String input){
-//		  int length = input.length();
-//		  String[] ret = new String[(int)Math.pow(3, length)];
-//		  for(int i = 0; i < ret.length; i++){
-//			  int count = i;
-//			  char[] tmp = new char[length];
-//			  for(int j = length - 1; j >= 0; j--){
-//				  char[] chartmp = digitToChars(input.charAt(j) - '0');
-//				  if(chartmp == null) return null;
-//				  tmp[j] = chartmp[(int)(count / Math.pow(3, j))];
-//				  count %= Math.pow(3, j);
-//			  }
-//			  ret[i] = new String(tmp);
-//		  }
-//		  return ret;
-//	  }
-//	  
-//	  private static HashSet<String> readDict() throws IOException{
-//		  HashSet<String> ret = new HashSet<String>();
-//		  BufferedReader in = new BufferedReader(new FileReader("dict.txt"));
-//		  String tmp;
-//		  while( (tmp = in.readLine()) != null)
-//			  ret.add(tmp);
-//	  
-//		  return ret;
-//	  }
-//}

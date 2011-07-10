@@ -1,4 +1,4 @@
-// USACO Section 1.3
+// USACO Section 1.3.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,18 +13,18 @@ LANG: JAVA
 PROG: calfflac
 */
 
-/* O(n) = 20000 * 2000 * 2*/
+/* O(n) = 20000 * 2000 * 2 */
 public class calfflac {
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("calfflac.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"calfflac.out")));
-		
+				"calfflac.out")),true);
+
+		// read this way to read in everything
 		char[] text = new char[20000];
 		int textLength = 0;
-		while(in.ready()){
+		while(in.ready())
 			text[textLength++] = (char)in.read();
-		}
 		String s = new String(text, 0, textLength);
 		
 		int resLen = 0;
@@ -35,8 +35,8 @@ public class calfflac {
 		for(int i = 0; i < s.length(); i++){
 			if(isChar(s.charAt(i))){
 				tmp = res(s,i,i);
-				if(tmp != null && alphaCharCount(tmp) > resLen){
-					resLen = alphaCharCount(tmp);
+				if(tmp != null && alphabetCharCount(tmp) > resLen){
+					resLen = alphabetCharCount(tmp);
 					res = tmp;
 				}
 			}
@@ -49,8 +49,8 @@ public class calfflac {
 				int ncpos = nextChar(s,c,i+1);
 				if(ncpos != -1){
 					tmp = res(s,i,ncpos);
-					if(tmp != null && alphaCharCount(tmp) > resLen){
-						resLen = alphaCharCount(tmp);
+					if(tmp != null && alphabetCharCount(tmp) > resLen){
+						resLen = alphabetCharCount(tmp);
 						res = tmp;
 					}
 				}
@@ -59,7 +59,6 @@ public class calfflac {
 		
 		out.println(resLen);
 		out.println(res);
-		out.close();
 		System.exit(0);
 	}
 	
@@ -73,7 +72,7 @@ public class calfflac {
 		return -1;
 	}
 	
-	private static int alphaCharCount(String s){
+	private static int alphabetCharCount(String s){
 		int cnt = 0;
 		for(int i = 0; i < s.length(); i++){
 			if(isChar(s.charAt(i)))

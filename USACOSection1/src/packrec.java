@@ -1,4 +1,4 @@
-// Section 1.4
+// Section 1.4.1
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,8 +25,9 @@ public class packrec {
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("packrec.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"packrec.out")));
+				"packrec.out")),true);
 		
+		// read in
 		Rectangle[] recs = new Rectangle[4];
 		for(int i = 0; i < 4; i++){
 			StringTokenizer st = new StringTokenizer(in.readLine());
@@ -34,13 +35,14 @@ public class packrec {
 					Integer.parseInt(st.nextToken()));
 		}
 		
+		// generate permutation and subset
 		List<int[]> perms = new ArrayList<int[]>(24);
 		genPermutation( 0, new int[]{0,1,2,3}, perms);
 		List<boolean[]> subset = new ArrayList<boolean[]>(16);
 		genSubset(0,new boolean[4], subset);
 		
 		List<Rectangle> res = new ArrayList<Rectangle>();
-		// improve it to call in function ,not to return permuatation.
+		// improve it to call in function ,not to return permutation.
 		for(int[] p : perms){
 			Rectangle r1 = recs[p[0]];
 			Rectangle r2 = recs[p[1]];
@@ -60,7 +62,15 @@ public class packrec {
 				Collections.addAll(res, calculate(w1,w2,w3,w4,h1,h2,h3,h4));
 			}
 		}
-		Collections.sort(res, new RectangleComparator());
+		Collections.sort(res, new Comparator<Rectangle>(){
+			public int compare(Rectangle arg0, Rectangle arg1) {
+				if(arg0.size() < arg1.size()) return -1;
+				if(arg0.size() > arg1.size()) return 1;
+				if(arg0.w < arg1.w) return -1;
+				if(arg0.w > arg1.w) return 1;
+				return 0;
+			}});
+		
 		int size = res.get(0).size();
 		int w = res.get(0).w;
 		int h = res.get(0).h;
@@ -76,7 +86,6 @@ public class packrec {
 			w = r.w;
 			h = r.h;
 		}
-		out.close();
 		System.exit(0);
 	}
 	
@@ -124,7 +133,7 @@ public class packrec {
 	private static void genPermutation(int t, int[] a, List<int[]> perms){
 		int tmp;
 		if(t == a.length) {
-			perms.add(a.clone()); // a.length !
+			perms.add(a.clone()); // a.length!
 		}
 		else
 			for(int i = t; i < a.length; i++){
@@ -136,7 +145,7 @@ public class packrec {
 	
 	private static void genSubset(int t, boolean[] a, List<boolean[]> subset){
 		if(t == a.length){
-			subset.add(a.clone());	// 2^ a.length
+			subset.add(a.clone());	// 2^a.length
 		}
 		else{
 			a[t] = false;
@@ -159,19 +168,8 @@ class Rectangle{
 		h = x;
 		w = y;
 	}
-	
 	public int size(){
 		return h * w;
-	}
-}
-
-class RectangleComparator implements Comparator<Rectangle>{
-	public int compare(Rectangle arg0, Rectangle arg1) {
-		if(arg0.size() < arg1.size()) return -1;
-		if(arg0.size() > arg1.size()) return 1;
-		if(arg0.w < arg1.w) return -1;
-		if(arg0.w > arg1.w) return 1;
-		return 0;
 	}
 }
 	

@@ -1,4 +1,4 @@
-// Section 1.4
+// Section 1.4.4
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +24,7 @@ public class milk3 {
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("milk3.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("milk3.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("milk3.out")),true);
 		
 		//read data
 		StringTokenizer st = new StringTokenizer(in.readLine());
@@ -37,7 +37,6 @@ public class milk3 {
 				out.print(i + " ");
 		out.println(c);
 
-		out.close();
 		System.exit(0);
 	}
 	

@@ -1,4 +1,4 @@
-// Section 1.4
+// Section 1.4.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,7 +25,7 @@ public class ariprog {
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("ariprog.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"ariprog.out")));
+				"ariprog.out")),true);
 		
 		// read data
 		int N = Integer.parseInt(in.readLine());
@@ -55,22 +55,18 @@ public class ariprog {
 		}
 
 		// sort and print
-		Collections.sort(res,new ABComparator());
+		Collections.sort(res,new Comparator<int[]>(){
+			public int compare(int[] o1, int[] o2) {
+				if(o1[1] < o2[1]) return -1;
+				if(o1[1] > o2[1]) return 1;
+				if(o1[0] < o2[0]) return -1;
+				if(o1[0] < o2[0]) return 1;
+				return 0;
+			}});
 		if(res.size() == 0) out.println("NONE");
 		for(int[] ab : res)
 			out.println(ab[0]+ " " + ab[1]);
 		
-		out.close();
 		System.exit(0);
-	}
-}
-
-class ABComparator implements Comparator<int[]>{
-	public int compare(int[] o1, int[] o2) {
-		if(o1[1] < o2[1]) return -1;
-		if(o1[1] > o2[1]) return 1;
-		if(o1[0] < o2[0]) return -1;
-		if(o1[0] < o2[0]) return 1;
-		return 0;
 	}
 }

@@ -22,6 +22,9 @@ PROG: packrec
 
 // possible solutions: 4! * 2^4 * 5 = 1920
 public class packrec {
+	
+	private static List<Rectangle> results = new ArrayList<Rectangle>();
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("packrec.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
@@ -35,34 +38,11 @@ public class packrec {
 					Integer.parseInt(st.nextToken()));
 		}
 		
-		// generate permutation and subset
-		List<int[]> perms = new ArrayList<int[]>(24);
-		genPermutation( 0, new int[]{0,1,2,3}, perms);
-		List<boolean[]> subset = new ArrayList<boolean[]>(16);
-		genSubset(0,new boolean[4], subset);
-		
-		List<Rectangle> res = new ArrayList<Rectangle>();
-		// improve it to call in function ,not to return permutation.
-		for(int[] p : perms){
-			Rectangle r1 = recs[p[0]];
-			Rectangle r2 = recs[p[1]];
-			Rectangle r3 = recs[p[2]];
-			Rectangle r4 = recs[p[3]];
-			for(boolean[] s : subset){
-				int w1,w2,w3,w4;
-				int h1,h2,h3,h4;
-				if(s[0]) {w1 = r1.w; h1=r1.h;}
-				else     {w1 = r1.h; h1=r1.w;}
-				if(s[1]) {w2 = r2.w; h2=r2.h;}
-				else     {w2 = r2.h; h2=r2.w;}
-				if(s[2]) {w3 = r3.w; h3=r3.h;}
-				else     {w3 = r3.h; h3=r3.w;}
-				if(s[3]) {w4 = r4.w; h4=r4.h;}
-				else     {w4 = r4.h; h4=r4.w;}
-				Collections.addAll(res, calculate(w1,w2,w3,w4,h1,h2,h3,h4));
-			}
-		}
-		Collections.sort(res, new Comparator<Rectangle>(){
+		// backtrack with permutation and subset
+		permutate(0,recs);
+
+		// sort by area and w
+		Collections.sort(results, new Comparator<Rectangle>(){
 			public int compare(Rectangle arg0, Rectangle arg1) {
 				if(arg0.size() < arg1.size()) return -1;
 				if(arg0.size() > arg1.size()) return 1;
@@ -71,13 +51,14 @@ public class packrec {
 				return 0;
 			}});
 		
-		int size = res.get(0).size();
-		int w = res.get(0).w;
-		int h = res.get(0).h;
+		// output
+		int size = results.get(0).size();
 		out.println(size);
+		int w = results.get(0).w;
+		int h = results.get(0).h;
 		out.println(w + " " + h);
-		for(int i = 1; i < res.size(); i ++){
-			Rectangle r = res.get(i);
+		for(int i = 1; i < results.size(); i ++){
+			Rectangle r = results.get(i);
 			if(r.size() != size)
 				break;
 			if(r.w == w && r.h == h)
@@ -123,35 +104,42 @@ public class packrec {
 			width = max(max(w1+w2, w1+w4), w3+w4);
 		else if (h4 >=h1+h3)
 			width = max(max(w1+w4, w3+w4), w2);
-		else // h4== h3
+		else // h4 == h3
 			width = max(w1+w2, w3+w4);
 		a[4] = new Rectangle(width,height);
 
 		return a;
 	}
 	
-	private static void genPermutation(int t, int[] a, List<int[]> perms){
-		int tmp;
-		if(t == a.length) {
-			perms.add(a.clone()); // a.length!
-		}
+	// length!
+	private static void permutate(int t, Rectangle[] recs){
+		if(t == recs.length)
+			subset(0,recs);// subset
 		else
-			for(int i = t; i < a.length; i++){
-				tmp = a[t]; a[t] = a[i]; a[i] = tmp;
-				genPermutation(t+1, a, perms);
-				tmp = a[t]; a[t] = a[i]; a[i] = tmp;
+			for(int i = t; i < recs.length; i++){
+				swap(recs,t,i);
+				permutate(t+1,recs);
+				swap(recs,t,i);
 			}
 	}
 	
-	private static void genSubset(int t, boolean[] a, List<boolean[]> subset){
-		if(t == a.length){
-			subset.add(a.clone());	// 2^a.length
-		}
+	private static void swap(Rectangle[] a, int p1, int p2){
+		Rectangle tmp = a[p1];
+		a[p1] = a[p2];
+		a[p2] = tmp;
+	}
+	
+	// 2^length
+	private static void subset(int t, Rectangle[] recs){
+		if(t == recs.length)
+			Collections.addAll(results,calculate(recs[0].w,recs[1].w,recs[2].w,recs[3].w,
+					recs[0].h,recs[1].h,recs[2].h,recs[3].h));
 		else{
-			a[t] = false;
-			genSubset(t+1, a, subset);
-			a[t] = true;
-			genSubset(t+1, a, subset);
+			// do not exchange h with w
+			subset(t+1,recs);
+			// exchange h with w
+			int tmp = recs[t].h; recs[t].h = recs[t].w; recs[t].w = tmp; 
+			subset(t+1,recs);
 		}
 	}
 }
@@ -160,13 +148,8 @@ class Rectangle{
 	public int h;
 	public int w;
 	public Rectangle(int x, int y){
-		if(x < y){
-			int tmp = x;
-			x = y;
-			y = tmp;
-		}
-		h = x;
-		w = y;
+		w = (x < y ? x : y);
+		h = (x > y ? x : y);
 	}
 	public int size(){
 		return h * w;

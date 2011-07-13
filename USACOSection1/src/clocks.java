@@ -1,4 +1,4 @@
-// Section 1.4
+// Section 1.4.2
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,52 +17,56 @@ import java.util.StringTokenizer;
  LANG: JAVA
  */
 
-// BFS 8^(3*9) -> can't achieve
-// Todo: try another method: use BFS and prunning, record status which's searched, using an array of 36 length
-
-// list all the possible sequences 4(enum 0...3)^9 lesser checks before longer 
+// O(n) = 3^9 = 19683 
 public class clocks {
+	private static int[] clock;
+	private static int[][] moves;
+	private static List<int[]> validSequence;
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new FileReader("clocks.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"clocks.out")));
+				"clocks.out")), true);
+
+		// read in
 		StringTokenizer st = new StringTokenizer(in.readLine());
-		int[] clock = new int[9];
+		clock = new int[9];
 		for (int i = 0; i < clock.length; i++) {
 			if (!st.hasMoreTokens())
 				st = new StringTokenizer(in.readLine());
 			clock[i] = Integer.parseInt(st.nextToken());
 		}
-		// Todo use char-'A' to generate the moves
-		int[][] moves = new int[][] { { 0, 1, 3, 4 }, { 0, 1, 2 },
-				{ 1, 2, 4, 5 }, { 0, 3, 6 }, { 1, 3, 4, 5, 7 }, { 2, 5, 8 },
-				{ 3, 4, 6, 7 }, { 6, 7, 8 }, { 4, 5, 7, 8 } };
 
-		int[] ms = new int[9];
-		List<int[]> validSequence = new ArrayList<int[]>();
-		for (int a = 0; a <= 3; a++)
-			for (int b = 0; b <= 3; b++)
-				for (int c = 0; c <= 3; c++)
-					for (int d = 0; d <= 3; d++)
-						for (int e = 0; e <= 3; e++)
-							for (int f = 0; f <= 3; f++)
-								for (int g = 0; g <= 3; g++)
-									for (int h = 0; h <= 3; h++)
-										for (int i = 0; i <= 3; i++) {
-											ms[0] = a;
-											ms[1] = b;
-											ms[2] = c;
-											ms[3] = d;
-											ms[4] = e;
-											ms[5] = f;
-											ms[6] = g;
-											ms[7] = h;
-											ms[8] = i;
-											if (moveSequenceCheck(clock, moves,
-													ms))
-												validSequence.add(ms.clone());
-										}
-		Collections.sort(validSequence, new ValidSequenceComparator());
+		// use char-'A' to generate the moves
+		moves = new int[][] { { 'A', 'B', 'D', 'E' }, { 'A', 'B', 'C' },
+				{ 'B', 'C', 'E', 'F' }, { 'A', 'D', 'G' },
+				{ 'B', 'D', 'E', 'F', 'H' }, { 'C', 'F', 'I' },
+				{ 'D', 'E', 'G', 'H' }, { 'G', 'H', 'I' },
+				{ 'E', 'F', 'H', 'I' } };
+		for (int[] tmp : moves)
+			for (int t : tmp)
+				t = t - 'A';
+
+		// backtrack
+		validSequence = new ArrayList<int[]>();
+		int[] moveSequence = new int[9];
+		backtrack(0, moveSequence);
+
+		Collections.sort(validSequence, new Comparator<int[]>() {
+			public int compare(int[] arg0, int[] arg1) {
+				if (arg0.length < arg1.length)
+					return -1;
+				if (arg0.length > arg1.length)
+					return 1;
+				for (int i = 0; i < arg0.length; i++) {
+					if (arg0[i] < arg1[i])
+						return -1;
+					if (arg0[i] > arg1[i])
+						return 1;
+				}
+				return 0;
+			}
+		});
 		int[] res = validSequence.get(0);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < res.length; i++) {
@@ -74,8 +78,18 @@ public class clocks {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		out.println(sb);
-		out.close();
 		System.exit(0);
+	}
+
+	private static void backtrack(int t, int[] moveSequence) {
+		if (t == moveSequence.length) {
+			if (applyMoveSequence(clock, moves, moveSequence))
+				validSequence.add(moveSequence.clone());
+		} else
+			for (int i = 0; i < 3; i++) {
+				moveSequence[t] = i;
+				backtrack(t + 1, moveSequence);
+			}
 	}
 
 	private static int clockwise(int n) {
@@ -88,7 +102,7 @@ public class clocks {
 			return 6;
 		case 6:
 			return 9;
-		default:
+		default: // can't reach here
 			throw new RuntimeException();
 		}
 	}
@@ -99,7 +113,7 @@ public class clocks {
 		}
 	}
 
-	private static boolean moveSequenceCheck(int[] clock, int[][] moves,
+	private static boolean applyMoveSequence(int[] clock, int[][] moves,
 			int[] ms) {
 		clock = clock.clone();
 		for (int i = 0; i < ms.length; i++) {
@@ -121,21 +135,5 @@ public class clocks {
 				return false;
 		}
 		return true;
-	}
-}
-
-class ValidSequenceComparator implements Comparator<int[]> {
-	public int compare(int[] arg0, int[] arg1) {
-		if (arg0.length < arg1.length)
-			return -1;
-		if (arg0.length > arg1.length)
-			return 1;
-		for (int i = 0; i < arg0.length; i++) {
-			if (arg0[i] < arg1[i])
-				return -1;
-			if (arg0[i] > arg1[i])
-				return 1;
-		}
-		return 0;
 	}
 }

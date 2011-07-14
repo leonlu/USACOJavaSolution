@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 public class clocks {
 	private static int[] clock;
 	private static int[][] moves;
-	private static List<int[]> validSequence;
+	private static List<int[]> validSequences;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new FileReader("clocks.in"));
@@ -43,16 +43,16 @@ public class clocks {
 				{ 'B', 'D', 'E', 'F', 'H' }, { 'C', 'F', 'I' },
 				{ 'D', 'E', 'G', 'H' }, { 'G', 'H', 'I' },
 				{ 'E', 'F', 'H', 'I' } };
-		for (int[] tmp : moves)
-			for (int t : tmp)
-				t = t - 'A';
+		for (int i = 0; i < moves.length; i++)
+			for (int j = 0; j < moves[i].length; j++)
+				moves[i][j] -= 'A';
 
 		// backtrack
-		validSequence = new ArrayList<int[]>();
+		validSequences = new ArrayList<int[]>();
 		int[] moveSequence = new int[9];
 		backtrack(0, moveSequence);
 
-		Collections.sort(validSequence, new Comparator<int[]>() {
+		Collections.sort(validSequences, new Comparator<int[]>() {
 			public int compare(int[] arg0, int[] arg1) {
 				if (arg0.length < arg1.length)
 					return -1;
@@ -67,7 +67,7 @@ public class clocks {
 				return 0;
 			}
 		});
-		int[] res = validSequence.get(0);
+		int[] res = validSequences.get(0);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < res.length; i++) {
 			int times = res[i];
@@ -84,7 +84,7 @@ public class clocks {
 	private static void backtrack(int t, int[] moveSequence) {
 		if (t == moveSequence.length) {
 			if (applyMoveSequence(clock, moves, moveSequence))
-				validSequence.add(moveSequence.clone());
+				validSequences.add(moveSequence.clone());
 		} else
 			for (int i = 0; i < 4; i++) {
 				moveSequence[t] = i;
@@ -93,24 +93,16 @@ public class clocks {
 	}
 
 	private static int clockwise(int n) {
-		switch (n) {
-		case 9:
-			return 12;
-		case 12:
+		n += 3;
+		if (n == 15)
 			return 3;
-		case 3:
-			return 6;
-		case 6:
-			return 9;
-		default: // can't reach here
-			throw new RuntimeException();
-		}
+		else
+			return n;
 	}
 
 	private static void moveClock(int[] clock, int[] move) {
-		for (int i : move) {
+		for (int i : move)
 			clock[i] = clockwise(clock[i]);
-		}
 	}
 
 	private static boolean applyMoveSequence(int[] clock, int[][] moves,
@@ -119,14 +111,10 @@ public class clocks {
 		for (int i = 0; i < ms.length; i++) {
 			int[] move = moves[i];
 			int cnt = ms[i];
-			while (cnt-- != 0) {
+			while (cnt-- != 0)
 				moveClock(clock, move);
-			}
 		}
-		if (successful(clock))
-			return true;
-		else
-			return false;
+		return successful(clock);
 	}
 
 	private static boolean successful(int[] clock) {

@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  LANG: JAVA
  */
 
-// O(n) = 3^9 = 19683 
+// O(n) = 4^9 = 262144
 public class clocks {
 	private static int[] clock;
 	private static int[][] moves;
@@ -86,7 +86,7 @@ public class clocks {
 			if (applyMoveSequence(clock, moves, moveSequence))
 				validSequence.add(moveSequence.clone());
 		} else
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 4; i++) {
 				moveSequence[t] = i;
 				backtrack(t + 1, moveSequence);
 			}

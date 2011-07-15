@@ -1,4 +1,4 @@
-// Section 1.5
+// Section 1.5.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +12,6 @@ PROG: sprime
 LANG: JAVA
 */
 
-
 public class sprime {
 	private static int N;
 	private static int[] init = new int[]{2,3,5,7};
@@ -21,13 +20,12 @@ public class sprime {
 	
 	public static void main(String[] args) throws Exception{
 		in = new BufferedReader(new FileReader("sprime.in"));
-		out = new PrintWriter(new BufferedWriter(new FileWriter("sprime.out")));
+		out = new PrintWriter(new BufferedWriter(new FileWriter("sprime.out")),true);
 		
 		N = Integer.parseInt(in.readLine());
 		for(int i : init)
 			dfs(i);
 		
-		out.close();
 		System.exit(0);
 	}
 	

@@ -12,21 +12,7 @@ PROG: checker
 LANG: JAVA
 */
 
-// Queens
-// The max data : 13 is easy to TLE using classic problem
-// Test 1: TEST OK [0.101 secs, 13916 KB]
-// Test 2: TEST OK [0.130 secs, 13916 KB]
-// Test 3: TEST OK [0.108 secs, 13916 KB]
-// Test 4: TEST OK [0.166 secs, 13916 KB]
-// Test 5: TEST OK [0.209 secs, 13916 KB]
-// Test 6: TEST OK [0.230 secs, 13916 KB]
-// Test 7: TEST OK [0.331 secs, 13916 KB]
-// Test 8: TEST OK [0.986 secs, 13916 KB] <- very close to TLE [online]
-// run on local machine -- data:13 -> 0.358s
-// run on LeonIV 0.281s
-
-// check algorithm improvement contributes a lot. great pruning
-
+// check algorithm improvement contributes a lot. great pruning!
 public class checker {
 	private static int MAX;
 	private static BufferedReader in;

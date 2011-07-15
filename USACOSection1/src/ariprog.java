@@ -17,9 +17,8 @@ PROG: ariprog
 */
 
 
-// Time Limit : 5s!
-// difficulty: 2 kinds of data , what to match what
-
+// Time Limit : 5s
+// hint: generate bisquares first
 public class ariprog {
 
 	public static void main(String[] args) throws Exception{
@@ -40,7 +39,7 @@ public class ariprog {
 			for(int q = p; q<= M; q++)
 				bisquares[p*p + q*q] = true;
 		
-		// search and prunning
+		// search and pruning
 		List<int[]> res = new ArrayList<int[]>();
 		for(int a = 0; a < MM2; a++){
 			if(!bisquares[a]) continue;

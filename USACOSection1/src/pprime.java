@@ -1,4 +1,4 @@
-// Section 1.5
+// Section 1.5.2
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,7 +17,7 @@ LANG: JAVA
 PROG: pprime
 */
 
-// Genearate palindromic to match prime
+// generate palindromic to match prime
 public class pprime {
 	
 	private static List<Integer> res = new ArrayList<Integer>();
@@ -32,7 +32,7 @@ public class pprime {
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("pprime.in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"pprime.out")));
+				"pprime.out")),true);
 		
 		// read data
 		StringTokenizer st = new StringTokenizer(in.readLine());
@@ -48,7 +48,6 @@ public class pprime {
 		// output
 		for(Integer num : res)
 			out.println(num);
-		out.close();
 		System.exit(0);
 	}
 	

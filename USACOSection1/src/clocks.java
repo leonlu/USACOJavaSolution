@@ -47,16 +47,22 @@ public class clocks {
 			for (int j = 0; j < moves[i].length; j++)
 				moves[i][j] -= 'A';
 
-		// backtrack
+		// dfs
 		validSequences = new ArrayList<int[]>();
 		int[] moveSequence = new int[9];
-		backtrack(0, moveSequence);
+		dfs(0, moveSequence);
 
+		// sort by length and first number
 		Collections.sort(validSequences, new Comparator<int[]>() {
 			public int compare(int[] arg0, int[] arg1) {
-				if (arg0.length < arg1.length)
+				int sum0 = 0, sum1 = 0;
+				for (int i = 0; i < arg0.length; i++) {
+					sum0 += arg0[i];
+					sum1 += arg1[i];
+				}
+				if (sum0 < sum1)
 					return -1;
-				if (arg0.length > arg1.length)
+				else if (sum0 > sum1)
 					return 1;
 				for (int i = 0; i < arg0.length; i++) {
 					if (arg0[i] < arg1[i])
@@ -81,14 +87,14 @@ public class clocks {
 		System.exit(0);
 	}
 
-	private static void backtrack(int t, int[] moveSequence) {
+	private static void dfs(int t, int[] moveSequence) {
 		if (t == moveSequence.length) {
-			if (applyMoveSequence(clock, moves, moveSequence))
+			if (moveClocks(clock, moves, moveSequence))
 				validSequences.add(moveSequence.clone());
 		} else
 			for (int i = 0; i < 4; i++) {
 				moveSequence[t] = i;
-				backtrack(t + 1, moveSequence);
+				dfs(t + 1, moveSequence);
 			}
 	}
 
@@ -105,7 +111,7 @@ public class clocks {
 			clock[i] = clockwise(clock[i]);
 	}
 
-	private static boolean applyMoveSequence(int[] clock, int[][] moves,
+	private static boolean moveClocks(int[] clock, int[][] moves,
 			int[] ms) {
 		clock = clock.clone();
 		for (int i = 0; i < ms.length; i++) {

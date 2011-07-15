@@ -73,6 +73,8 @@ public class clocks {
 				return 0;
 			}
 		});
+		
+		// output
 		int[] res = validSequences.get(0);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < res.length; i++) {

@@ -1,4 +1,4 @@
-// Section 2.1
+// Section 2.1.2
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,7 +23,7 @@ public class frac1 {
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("frac1.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("frac1.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("frac1.out")),true);
 		
 		List<Fraction> fractions = new ArrayList<Fraction>();
 		
@@ -35,13 +35,19 @@ public class frac1 {
 				fractions.add(new Fraction(i,j,1.0 * i/j));
 			}
 		
-		Collections.sort(fractions, new FractionComparator());
+		Collections.sort(fractions, new Comparator<Fraction>(){
+			public int compare(Fraction arg0, Fraction arg1) {
+				if(arg0.value < arg1.value) return -1;
+				if(arg0.value > arg1.value) return 1;
+				return 0;
+			}});
+		
+		// output
 		out.println("0/1");
 		for(Fraction f : fractions)
 			out.println(f.i +"/" + f.j);
 		out.println("1/1");
 
-		out.close();
 		System.exit(0);
 	}
 	
@@ -62,14 +68,4 @@ class Fraction{
 		this.j = j;
 		this.value = value;
 	}
-}
-
-class FractionComparator implements Comparator<Fraction>{
-
-	public int compare(Fraction arg0, Fraction arg1) {
-		if(arg0.value < arg1.value) return -1;
-		if(arg0.value > arg1.value) return 1;
-		return 0;
-	}
-	
 }

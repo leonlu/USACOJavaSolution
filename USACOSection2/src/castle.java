@@ -1,4 +1,4 @@
-// Section 2.1
+// Section 2.1.1
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +13,7 @@ PROG: castle
 LANG: JAVA
 */
 
-// simple recursive floodfill is fine here
+// dsf recursive floodfill is fine here
 // check every two rooms' sum of size
 // only need to break walls to the north and to the east
 public class castle {
@@ -26,10 +26,8 @@ public class castle {
 	private static int[] colorcnt;
 	
 	public static void main(String[] args) throws Exception{
-		long old = System.currentTimeMillis();
-
 		BufferedReader in = new BufferedReader(new FileReader("castle.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("castle.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("castle.out")),true);
 		
 		StringTokenizer st = new StringTokenizer(in.readLine());
 		M = Integer.parseInt(st.nextToken());
@@ -37,26 +35,24 @@ public class castle {
 		rooms = new int[N][M];
 		roomscolor = new int[N][M];
 		colorcnt = new int[M * N + 1];
-		
+
+		// flood fill
 		for(int i = 0; i < N; i++){
 			st = new StringTokenizer(in.readLine());
 			for(int j = 0; j < M; j++)
 				rooms[i][j] = Integer.parseInt(st.nextToken());
 		}
-		
 		for(int i = 0; i < N; i++)
 			for(int j = 0; j < M; j++)
 				if(roomscolor[i][j] == 0)
 					dfs(i,j,maxcolor++);
-		
 		out.println(maxcolor-1);
-		
 		int maxCount = 0;
 		for(int i : colorcnt)
 			maxCount = i > maxCount ? i : maxCount;
-			
 		out.println(maxCount);
 		
+		// break wall
 		maxCount = 0;
 		int wallI = 0;
 		int wallJ = 0;
@@ -85,11 +81,7 @@ public class castle {
 		
 		out.println(maxCount);
 		out.println(wallI+1 + " " + (wallJ+1) +" " + direction);
-		
-		
-		System.out.println("Time elapsed: " +(System.currentTimeMillis() - old)/1000.0);
 
-		out.close();
 		System.exit(0);
 	}
 	
@@ -101,7 +93,6 @@ public class castle {
 		colorcnt[color]++;
 		
 		// Pay attention to the priority of operator &
-		
 		// To West
 		if( (rooms[i][j] & 1) == 0 && j-1 >= 0)
 			dfs(i,j-1,color);
@@ -114,6 +105,5 @@ public class castle {
 		// To South
 		if( (rooms[i][j] & 8) == 0 && i+1 <= N-1)
 			dfs(i+1,j,color);
-		
 	}
 }

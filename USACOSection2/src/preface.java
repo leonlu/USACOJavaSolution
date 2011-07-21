@@ -1,4 +1,4 @@
-// Section 2.2
+// Section 2.2.1
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,7 +15,7 @@ LANG: JAVA
 public class preface {
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("preface.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("preface.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("preface.out")),true);
 		int oneCount[]  = new int[4]; // 1 10 100 1000
 		int fiveCount[] = new int[4]; // 5 50 500
 		int N = Integer.parseInt(in.readLine());
@@ -51,7 +51,6 @@ public class preface {
 		if(oneCount[3] != 0)
 			out.println("M " + oneCount[3]);		
 		
-		out.close();
 		System.exit(0);
 	}
 }

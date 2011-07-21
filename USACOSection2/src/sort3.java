@@ -1,4 +1,4 @@
-// Section 2.1
+// Section 2.1.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,7 +17,7 @@ LANG: JAVA
 public class sort3 {
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("sort3.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sort3.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sort3.out")),true);
 		
 		int lines = Integer.parseInt(in.readLine());
 		int[] nums = new int[lines];
@@ -43,7 +43,6 @@ public class sort3 {
 		
 		out.println(cnt);
 
-		out.close();
 		System.exit(0);
 	}
 }

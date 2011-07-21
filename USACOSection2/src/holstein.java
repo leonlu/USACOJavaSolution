@@ -1,4 +1,4 @@
-// Section 2.1
+// Section 2.1.4
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,7 +29,7 @@ public class holstein {
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("holstein.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("holstein.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("holstein.out")),true);
 
 		// read data
 		vCount = Integer.parseInt(in.readLine());
@@ -63,12 +63,11 @@ public class holstein {
 	
 		out.println(sb.toString());
 		
-		out.close();
 		System.exit(0);
 	}
 	
 	private static void dfs(int t){
-		if(toUseCount > resToUseCount) return; // prunning
+		if(toUseCount > resToUseCount) return; // pruning
 		
 		if (meet() && less()){
 			resToUseCount = toUseCount;

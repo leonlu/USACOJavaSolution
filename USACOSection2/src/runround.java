@@ -1,4 +1,4 @@
-// Section 2.2
+// Section 2.2.3
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,10 +12,12 @@ PROG: runround
 LANG: JAVA
 */
 
+// runround numbers have unique digits, so the max length is 9
+// a position can't be accessed for a second time by following the rule
 public class runround {
 	public static void main(String[] args) throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader("runround.in"));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("runround.out")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("runround.out")),true);
 		int M = Integer.parseInt(in.readLine());
 		
 		label:
@@ -31,7 +33,6 @@ public class runround {
 						continue label;
 						else{
 							out.println(M);
-							out.close();
 							System.exit(0);
 							break label;
 						}
